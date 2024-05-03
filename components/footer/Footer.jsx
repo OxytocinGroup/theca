@@ -1,5 +1,5 @@
 import Link from "next/link";
-import OxytocinLogo from "./oxytocinlogo";
+import OxytocinLogo from "./OxytocinLogo";
 
 const Footer = () => {
   return (
@@ -11,7 +11,7 @@ const Footer = () => {
           }
         />
       </Link>
-      <p>Powered by NextJS</p>
+      <p className="text-sm">Powered by NextJS</p>
     </footer>
   );
 };
