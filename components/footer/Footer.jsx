@@ -1,10 +1,17 @@
-import OxytocinLogo from "./oxytocinlogo";
+import Link from "next/link";
+import OxytocinLogo from "./OxytocinLogo";
 
 const Footer = () => {
   return (
     <footer className="flex w-full justify-between text-text-secondary">
-      <OxytocinLogo color={"hsl(var(--text-secondary))"} />
-      <p>Powered by NextJS</p>
+      <Link href={"https://t.me/oxytocingroup"}>
+        <OxytocinLogo
+          className={
+            "fill-text-secondary hover:fill-text-primary transition-all "
+          }
+        />
+      </Link>
+      <p className="text-sm">Powered by NextJS</p>
     </footer>
   );
 };

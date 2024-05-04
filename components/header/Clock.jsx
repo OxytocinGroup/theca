@@ -14,14 +14,14 @@ const clock = () => {
   }, []);
 
   const timeOptions = { hour: "numeric", minute: "numeric" };
-  const dateOptions = { day: "2-digit", month: "long", year: "numeric" };
+  const dateOptions = { day: "numeric", month: "long", year: "numeric" };
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-text-secondary">
-        {localTime.toLocaleDateString(undefined, dateOptions)}
+        {localTime.toLocaleDateString("en-GB", dateOptions)}
       </h2>
       <h1 className="text-text-primary">
-        {localTime.toLocaleTimeString(undefined, timeOptions)}
+        {localTime.toLocaleTimeString("en-GB", timeOptions)}
       </h1>
     </div>
   );
