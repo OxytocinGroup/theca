@@ -16,6 +16,7 @@ import { PasswordInput } from "@/components/password-input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { registerUser } from "@/utils/register-user";
 
 const schema = z.object({
   email: z
@@ -36,9 +37,18 @@ export default function RegisterForm() {
       password: "",
     },
   });
-  const onSubmit = async ({ ...data }) => (
-    console.log("data", data), form.reset(), setPassword("")
-  );
+  const onSubmit = async ({ ...data }) => {
+    console.log("Email:", data.email);
+    console.log("Password:", data.password);
+
+    try {
+      await registerUser({ ...data });
+      form.reset();
+      setPassword("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-6/12 ">
