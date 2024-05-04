@@ -22,10 +22,12 @@ const schema = z.object({
     .string({ message: "Please enter your email address" })
     // .min(1, "Please enter your email address")
     .email({ message: "Please enter a valid email address" }),
-  password: z.string({ message: "Please enter your password" }),
+  password: z
+    .string({ message: "Please enter your password" })
+    .min(6, "Password must be at least 6 characters"),
 });
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const form = useForm({
     resolver: zodResolver(schema),
@@ -75,30 +77,21 @@ export default function LoginForm() {
                     />
                   </FormControl>
                   <FormMessage />
-                  <FormDescription className="cursor-default text-sm text-muted-foreground">
-                    Forgot Password?{" "}
-                    <Link
-                      href="/reset-password"
-                      className="text-text-primary dark"
-                    >
-                      Reset
-                    </Link>
-                  </FormDescription>
                 </FormItem>
               )}
             />
           </div>
           <div className="flex flex-col gap-2 items-center">
             <Button variant="default" className="dark w-fit" size="lg">
-              Login
+              Register
             </Button>
             <p className="text-text-secondary">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <Link
                 className="text-text-primary hover:underline transition-all"
-                href="/register"
+                href="/login"
               >
-                Sign Up
+                Login
               </Link>
             </p>
           </div>
