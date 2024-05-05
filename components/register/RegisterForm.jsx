@@ -19,7 +19,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 
 const apiRegister = `/api/register`;
-const apiUserExists = `/api/userExists`;
+const apiLoginExists = `/api/loginExists`;
+const apiEmailExists = `/api/emailExists`;
 
 const schema = z.object({
   login: z
@@ -37,7 +38,8 @@ const schema = z.object({
 export default function RegisterForm() {
   const router = useRouter();
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -51,18 +53,36 @@ export default function RegisterForm() {
     // e.preventDefault();
 
     try {
-      const resUserExists = await fetch(apiUserExists, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data.email),
-      });
+      const responses = await Promise.all([
+        fetch(apiLoginExists, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+        fetch(apiEmailExists, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+      ]);
 
-      const { user } = await resUserExists.json();
+      const [loginExistsData, emailExistsData] = await Promise.all([
+        responses[0].json(),
+        responses[1].json(),
+      ]);
 
-      if (user) {
-        setError("User already exists.");
+      const { userLogin } = loginExistsData;
+      const { userEmail } = emailExistsData;
+
+      if (userLogin && userEmail) {
+        setLoginError("Login already exists. Please login or try another one");
+        setEmailError("Email already exists. Please login or try another one");
+        return;
+      } else if (userLogin) {
+        setLoginError("Login already exists. Please login or try another one");
+        return;
+      } else if (userEmail) {
+        setEmailError("Email already exists. Please login or try another one");
         return;
       }
 
@@ -99,7 +119,7 @@ export default function RegisterForm() {
                   <FormControl>
                     <Input placeholder="Login" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{loginError}</FormMessage>
                 </FormItem>
               )}
             />
@@ -111,7 +131,7 @@ export default function RegisterForm() {
                   <FormControl>
                     <Input placeholder="Email" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{emailError}</FormMessage>
                 </FormItem>
               )}
             />
