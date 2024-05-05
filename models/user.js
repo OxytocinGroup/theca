@@ -1,7 +1,11 @@
-import mongoose, { models, Schema } from "mongoose";
+import mongoose, { Schema, models } from "mongoose";
 
 const userSchema = new Schema(
   {
+    login: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,

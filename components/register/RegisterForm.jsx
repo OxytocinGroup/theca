@@ -16,9 +16,15 @@ import { PasswordInput } from "@/components/password-input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { registerUser } from "@/utils/register-user";
+import { useRouter } from "next/navigation";
+
+const apiRegister = `/api/register`;
+const apiUserExists = `/api/userExists`;
 
 const schema = z.object({
+  login: z
+    .string({ message: "Please enter your login" })
+    .min(3, "Login must be at least 3 characters"),
   email: z
     .string({ message: "Please enter your email address" })
     // .min(1, "Please enter your email address")
@@ -29,24 +35,51 @@ const schema = z.object({
 });
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
+      login: "",
       email: "",
       password: "",
     },
   });
+
   const onSubmit = async ({ ...data }) => {
-    console.log("Email:", data.email);
-    console.log("Password:", data.password);
+    // e.preventDefault();
 
     try {
-      await registerUser({ ...data });
-      form.reset();
-      setPassword("");
+      const resUserExists = await fetch(apiUserExists, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data.email),
+      });
+
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        setError("User already exists.");
+        return;
+      }
+
+      const res = await fetch(apiRegister, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        form.reset();
+        router.push("/");
+      } else {
+        console.log("User registration failed.");
+        console.log(res);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error during registration: ", error);
     }
   };
 
@@ -58,6 +91,18 @@ export default function RegisterForm() {
           className="flex flex-col gap-8 justify-center items-center"
         >
           <div className="flex flex-col gap-4 w-full">
+            <FormField
+              control={form.control}
+              name="login"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1">
+                  <FormControl>
+                    <Input placeholder="Login" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
