@@ -1,4 +1,5 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Link from "next/link";
@@ -16,27 +17,50 @@ import { PasswordInput } from "@/components/password-input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
-  email: z
-    .string({ message: "Please enter your email address" })
-    // .min(1, "Please enter your email address")
-    .email({ message: "Please enter a valid email address" }),
+  username: z.string({ message: "Please enter your username" }),
+  // email: z.string({ message: "Please enter your email address" }),
+  // .min(1, "Please enter your email address")
+  // .email({ message: "Please enter a valid email address" }),
   password: z.string({ message: "Please enter your password" }),
 });
 
 export default function LoginForm() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "",
+      // email: "",
+      username: "",
       password: "",
     },
   });
-  const onSubmit = async ({ ...data }) => (
-    console.log("data", data), form.reset(), setPassword("")
-  );
+
+  const onSubmit = async ({ ...data }) => {
+    // e.preventDefault();
+
+    try {
+      const res = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+
+      if (res.error) {
+        console.log(error);
+        setError("Invalid Credentials");
+        return;
+      }
+
+      router.replace("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-6/12 ">
@@ -48,11 +72,11 @@ export default function LoginForm() {
           <div className="flex flex-col gap-4 w-full">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-1">
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Username or email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,7 +98,7 @@ export default function LoginForm() {
                       autoComplete="new-password"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{error}</FormMessage>
                   <FormDescription className="cursor-default text-sm text-muted-foreground">
                     Forgot Password?{" "}
                     <Link

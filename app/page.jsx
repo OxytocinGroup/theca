@@ -3,6 +3,7 @@ import { Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header/Header";
+import LoggedAs from "@/components/main/LoggedAs";
 
 export default function Home() {
   return (
@@ -17,7 +18,8 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex justify-between w-full items-center">
-            <h4 className="text-text-secondary">Bookmarks</h4>
+            <LoggedAs />
+
             <button className="text-text-secondary flex gap-1 justify-end items-center">
               <Download />
               <h4 className="text-text-secondary">Import</h4>

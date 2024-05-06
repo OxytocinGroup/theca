@@ -16,12 +16,19 @@ import { PasswordInput } from "@/components/password-input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { registerUser } from "@/utils/register-user";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+const apiRegister = `/api/register`;
+const apiLoginExists = `/api/loginExists`;
+const apiEmailExists = `/api/emailExists`;
 
 const schema = z.object({
+  username: z
+    .string({ message: "Please enter your username" })
+    .min(3, "Username must be at least 3 characters"),
   email: z
     .string({ message: "Please enter your email address" })
-    // .min(1, "Please enter your email address")
     .email({ message: "Please enter a valid email address" }),
   password: z
     .string({ message: "Please enter your password" })
@@ -29,24 +36,70 @@ const schema = z.object({
 });
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
   });
-  const onSubmit = async ({ ...data }) => {
-    console.log("Email:", data.email);
-    console.log("Password:", data.password);
 
+  const onSubmit = async ({ ...data }) => {
     try {
-      await registerUser({ ...data });
-      form.reset();
-      setPassword("");
+      const responses = await Promise.all([
+        fetch(apiLoginExists, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+        fetch(apiEmailExists, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+      ]);
+
+      const [loginExistsData, emailExistsData] = await Promise.all([
+        responses[0].json(),
+        responses[1].json(),
+      ]);
+
+      const { userLogin } = loginExistsData;
+      const { userEmail } = emailExistsData;
+
+      if (userLogin && userEmail) {
+        setLoginError("Login already exists. Please login or try another one");
+        setEmailError("Email already exists. Please login or try another one");
+        return;
+      } else if (userLogin) {
+        setLoginError("Login already exists. Please login or try another one");
+        return;
+      } else if (userEmail) {
+        setEmailError("Email already exists. Please login or try another one");
+        return;
+      }
+
+      const res = await fetch(apiRegister, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        console.log("res.ok", res);
+        signIn("credentials", {
+          ...data,
+        });
+      } else {
+        console.log("User registration failed.");
+        console.log(res);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error during registration: ", error);
     }
   };
 
@@ -60,13 +113,25 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-4 w-full">
             <FormField
               control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1">
+                  <FormControl>
+                    <Input placeholder="Username" {...field} />
+                  </FormControl>
+                  <FormMessage>{loginError}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-1">
                   <FormControl>
                     <Input placeholder="Email" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{emailError}</FormMessage>
                 </FormItem>
               )}
             />
