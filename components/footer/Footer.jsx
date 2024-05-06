@@ -1,5 +1,5 @@
 import Link from "next/link";
-import OxytocinLogo from "./OxytocinLogo";
+import OxytocinLogo from "@/components/footer/OxytocinLogo";
 
 const Footer = () => {
   return (

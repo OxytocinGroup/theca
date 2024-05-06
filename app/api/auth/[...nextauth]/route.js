@@ -11,7 +11,7 @@ export const authOptions = {
       credentials: {},
 
       async authorize(credentials) {
-        const { username, login, email, password } = credentials;
+        const { username, password } = credentials;
 
         try {
           await connectMongoDB();
@@ -42,6 +42,15 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
 };
 
