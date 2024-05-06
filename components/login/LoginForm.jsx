@@ -20,8 +20,6 @@ import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const apiGetLogin = `/api/getUserName`;
-
 const schema = z.object({
   email: z
     .string({ message: "Please enter your email address" })
@@ -58,20 +56,6 @@ export default function LoginForm() {
         setError("Invalid Credentials");
         return;
       }
-
-      // console.log(JSON.stringify(data.email));
-
-      const loginRes = await fetch(apiGetLogin, {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-
-      if (loginRes.error) {
-        console.log(error);
-        return;
-      }
-
-      console.log(loginRes);
 
       router.replace("/");
     } catch (error) {
