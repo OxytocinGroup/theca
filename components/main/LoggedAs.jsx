@@ -15,7 +15,6 @@ import {
 export default function LoggedAs() {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
 
   return (
     <div className="flex gap-1 items-center">
