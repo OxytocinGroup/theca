@@ -24,12 +24,11 @@ const apiLoginExists = `/api/loginExists`;
 const apiEmailExists = `/api/emailExists`;
 
 const schema = z.object({
-  login: z
-    .string({ message: "Please enter your login" })
-    .min(3, "Login must be at least 3 characters"),
+  username: z
+    .string({ message: "Please enter your username" })
+    .min(3, "Username must be at least 3 characters"),
   email: z
     .string({ message: "Please enter your email address" })
-    // .min(1, "Please enter your email address")
     .email({ message: "Please enter a valid email address" }),
   password: z
     .string({ message: "Please enter your password" })
@@ -44,15 +43,13 @@ export default function RegisterForm() {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      login: "",
+      username: "",
       email: "",
       password: "",
     },
   });
 
   const onSubmit = async ({ ...data }) => {
-    // e.preventDefault();
-
     try {
       const responses = await Promise.all([
         fetch(apiLoginExists, {
@@ -93,6 +90,7 @@ export default function RegisterForm() {
       });
 
       if (res.ok) {
+        console.log("res.ok", res);
         signIn("credentials", {
           ...data,
         });
@@ -115,11 +113,11 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-4 w-full">
             <FormField
               control={form.control}
-              name="login"
+              name="username"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-1">
                   <FormControl>
-                    <Input placeholder="Login" {...field} />
+                    <Input placeholder="Username" {...field} />
                   </FormControl>
                   <FormMessage>{loginError}</FormMessage>
                 </FormItem>

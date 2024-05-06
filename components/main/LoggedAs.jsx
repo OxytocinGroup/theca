@@ -4,6 +4,8 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 import {
   Popover,
   PopoverContent,
@@ -11,6 +13,7 @@ import {
 } from "@/components/ui/popover";
 
 export default function LoggedAs() {
+  const router = useRouter();
   const { data: session } = useSession();
   console.log(session);
 
@@ -28,7 +31,10 @@ export default function LoggedAs() {
           className="rounded-xl w-fit bg-background-secondary border-background"
         >
           <button
-            onClick={() => signOut()}
+            onClick={() => {
+              signOut();
+              router.push("/login");
+            }}
             className="text-text-primary flex gap-1 justify-end items-center"
           >
             <LogOut />
