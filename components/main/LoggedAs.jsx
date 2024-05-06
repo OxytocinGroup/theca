@@ -12,7 +12,7 @@ import {
 
 export default function LoggedAs() {
   const { data: session } = useSession();
-  console.log(session);
+  // console.log(session);
 
   return (
     <div className="flex gap-1 items-center">
