@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="h-lvh bg-background text-primary">
+      <body className="h-lvh flex flex-col justify-between py-24 px-[300px] bg-background text-primary">
         {children}
         <Footer />
       </body>
