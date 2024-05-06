@@ -16,6 +16,7 @@ import { PasswordInput } from "@/components/password-input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const apiRegister = `/api/register`;
@@ -92,8 +93,9 @@ export default function RegisterForm() {
       });
 
       if (res.ok) {
-        form.reset();
-        router.push("/");
+        signIn("credentials", {
+          ...data,
+        });
       } else {
         console.log("User registration failed.");
         console.log(res);
