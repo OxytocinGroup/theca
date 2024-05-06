@@ -60,6 +60,6 @@ Follow these steps to set up and run a local instance of Theca:
 
 Contributions to Theca are welcome! Whether it's feature requests, bug reports, or code contributions, please feel free to make an issue or pull request on this repository.
 
-<!-- ## License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. -->
+This project is licensed under the GNU GPL-3 License - see the [LICENSE](LICENSE) file for details.
