@@ -17,12 +17,12 @@ export default function LoggedAs() {
   const { data: session } = useSession();
 
   return (
-    <div className="flex gap-1 items-center">
+    <div className="flex gap-2 items-center">
       <h4 className="text-text-secondary">Logged in as</h4>
       <Popover>
         <PopoverTrigger asChild>
-          <div className="relative after:absolute after:bottom-0 after:block after:h-[1px] after:w-0 after:bg-text-primary after:transition-all after:duration-150 after:ease-out after:content-[''] hover:after:left-0 hover:after:w-1/5 group-hover:after:left-0 group-hover:after:w-1/5 cursor-pointer">
-            <h4 className="text-text-primary">{session?.user?.email}</h4>
+          <div className="relative after:absolute after:bottom-0 after:block after:h-[1px] after:w-0 after:bg-text-primary after:transition-all after:duration-150 after:ease-out after:content-[''] hover:after:left-0 hover:after:w-full group-hover:after:left-0 group-hover:after:w-full cursor-pointer">
+            <h4 className="text-text-primary">{session?.user?.username}</h4>
           </div>
         </PopoverTrigger>
         <PopoverContent
