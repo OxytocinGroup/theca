@@ -1,11 +1,13 @@
 import Clock from "@/components/header/Clock";
-import Search from "@/components/header/SearchInput";
+import LoggedAs from "@/components/header/LoggedAs";
+import ThecaLogo from "./ThecaLogo";
 
 const Header = () => {
   return (
-    <header className="flex flex-col gap-4 items-center">
-      <Clock />;
-      <Search />;
+    <header className="flex w-full justify-between items-center">
+      <ThecaLogo />
+      <Clock className={"absolute left-0 right-0 "} />
+      <LoggedAs />
     </header>
   );
 };

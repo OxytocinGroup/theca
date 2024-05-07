@@ -99,7 +99,7 @@ export default function LoginForm() {
                     />
                   </FormControl>
                   <FormMessage>{error}</FormMessage>
-                  <FormDescription className="cursor-default text-sm text-muted-foreground">
+                  <FormDescription className="mt-4">
                     Forgot Password?{" "}
                     <Link
                       href="/reset-password"
@@ -112,8 +112,8 @@ export default function LoginForm() {
               )}
             />
           </div>
-          <div className="flex flex-col gap-2 items-center">
-            <Button variant="default" className="dark w-fit" size="lg">
+          <div className="flex flex-col gap-4 items-center">
+            <Button variant="default" className="w-fit" size="lg">
               Login
             </Button>
             <p className="text-text-secondary">

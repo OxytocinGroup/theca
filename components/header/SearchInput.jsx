@@ -1,8 +1,11 @@
 "use client";
 
+import { useCallback, useEffect } from "react";
+
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Google from "@/components/icons/google";
 
 const SearchInput = () => {
   const handleSearch = () => {
@@ -12,16 +15,32 @@ const SearchInput = () => {
       window.location.href = `https://google.com/search?q=${query}`;
     }
   };
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        handleSearch();
+      }
+    };
+
+    // Attach the event listener for "Enter" key press
+    document.addEventListener("keydown", handleKeyPress);
+
+    // Remove the event listener
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [handleSearch]);
+
   return (
-    <div className="flex gap-3 px-24 w-1/2">
-      <Input
-        type="text"
-        placeholder="Search"
-        className="bg-background-secondary text-text-primary border-text-secondary"
-      />
+    <div className="flex gap-4 px-24 w-full">
+      <div className="flex justify-center items-center py-3 px-3.5 h-auto bg-background-secondary text-text-primary  border-none rounded-2xl">
+        <Google />
+      </div>
+      <Input type="text" placeholder="Search" />
       <Button
         onClick={handleSearch}
-        className="flex justify-center items-center p-2 bg-background-secondary text-text-primary border-text-secondary border-[1px]"
+        className="flex justify-center items-center py-3 px-3.5 h-auto bg-background-secondary text-text-secondary  border-none hover:text-text-primary rounded-2xl"
       >
         <Search />
       </Button>

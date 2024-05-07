@@ -1,8 +1,10 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 import { useEffect, useState } from "react";
 
-const clock = () => {
+const clock = ({ className }) => {
   const [localTime, setLocalTime] = useState(new Date());
 
   useEffect(() => {
@@ -16,13 +18,13 @@ const clock = () => {
   const timeOptions = { hour: "numeric", minute: "numeric" };
   const dateOptions = { day: "numeric", month: "long", year: "numeric" };
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-text-secondary">
+    <div className={cn("flex flex-col items-center", className)}>
+      <p className="text-text-secondary">
         {localTime.toLocaleDateString("en-GB", dateOptions)}
-      </h2>
-      <h1 className="text-text-primary">
+      </p>
+      <p className="text-text-primary">
         {localTime.toLocaleTimeString("en-GB", timeOptions)}
-      </h1>
+      </p>
     </div>
   );
 };

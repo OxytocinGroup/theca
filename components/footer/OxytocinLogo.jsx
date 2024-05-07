@@ -1,4 +1,4 @@
-const OxytocinLogo = ({ className, size = 31, color }) => {
+const OxytocinLogo = ({ className, size = 32, color }) => {
   return (
     <div className={className}>
       <svg
