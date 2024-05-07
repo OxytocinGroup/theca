@@ -1,7 +1,5 @@
 import Bookmark from "@/components/main/Bookmark";
 import { Download } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Header from "@/components/header/Header";
 import LoggedAs from "@/components/main/LoggedAs";
 
@@ -10,12 +8,6 @@ export default function Home() {
     <>
       <Header />
       <main className="flex flex-col gap-24">
-        <div className="flex gap-3 px-24">
-          <Input type="text" placeholder="Search" />
-          <Button className="flex justify-center items-center py-2 px-4">
-            Search
-          </Button>
-        </div>
         <div className="flex flex-col gap-6">
           <div className="flex justify-between w-full items-center">
             <LoggedAs />
