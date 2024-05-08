@@ -7,8 +7,11 @@ import bcrypt from "bcryptjs";
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "credentials",
-      credentials: {},
+      name: "Credentials",
+      credentials: {
+        username: { label: "username", type: "text", placeholder: "jsmith" },
+        password: { label: "password", type: "password" },
+      },
 
       async authorize(credentials) {
         const { username, password } = credentials;
@@ -16,7 +19,7 @@ export const authOptions = {
         try {
           await connectMongoDB();
           const user = await User.findOne({
-            $or: [{ email: username }, { username: username }],
+            $or: [{ username: username }, { email: username }],
           });
 
           if (!user) {
@@ -29,6 +32,7 @@ export const authOptions = {
             return null;
           }
 
+          console.log(user);
           return user;
         } catch (error) {
           console.log("Error: ", error);
@@ -50,6 +54,15 @@ export const authOptions = {
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
+    },
+    async jwt({ token, user }) {
+      user && (token.user = user);
+      return token;
+    },
+    async session({ session, token }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      session.user = token.user;
+      return session;
     },
   },
 };

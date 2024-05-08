@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="h-lvh flex flex-col justify-between py-24 px-[300px] bg-background text-primary">
+      <body className="h-lvh flex flex-col justify-between pb-8 pt-12 px-[300px] bg-background text-primary">
         <AuthProvider>
           {children}
           <Footer />

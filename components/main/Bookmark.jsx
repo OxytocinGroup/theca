@@ -9,7 +9,7 @@ const Bookmark = (link = "/", favicon = noImg, title = "Bookmark") => {
       className="flex gap-3 items-center px-4 py-3 rounded-2xl bg-background-secondary"
     >
       <Image src={favicon} alt={title} width={24} height={24} />
-      <h3>{title}</h3>
+      <p className="text-text-primary text-lg">{title}</p>
     </Link>
   );
 };
