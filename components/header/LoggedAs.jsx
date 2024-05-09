@@ -17,7 +17,7 @@ export default function LoggedAs() {
   const { data: session } = useSession();
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-[5px] items-center">
       <p className="text-text-secondary">Logged in as</p>
       <Popover>
         <PopoverTrigger asChild>
