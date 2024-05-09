@@ -1,6 +1,6 @@
 # Theca - Cloud Bookmark Manager
 
-Welcome to Theca, a cloud-based bookmark management application tailored specifically for gamers. Built using Next.js, Theca allows gamers to access their favorite websites and resources without minimizing their game. By integrating Theca into your gaming overlay and setting it as your homepage, you can stay focused on your gaming sessions while easily managing and accessing bookmarks.
+Welcome to Theca, a cloud-based bookmark management application tailored specifically for gamers. Built using Next.js, Theca allows gamers to access their favorite websites and resources without minimizing their game. By integrating Theca into your gaming overlay and setting it as your homepage, you can stay focused on your gaming sessions while easily managing and accessing bookmarks!
 
 ## Features
 
