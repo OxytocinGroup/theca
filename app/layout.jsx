@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Footer from "@/components/footer/Footer";
 import { AuthProvider } from "@/Providers";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,10 +12,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="h-lvh flex flex-col justify-between pb-8 pt-12 px-[300px] bg-background text-primary">
+      <body className="bg-background text-primary">
         <AuthProvider>
-          {children}
-          <Footer />
+          <div className="h-lvh flex flex-col justify-between pb-8 pt-12 px-[300px]">
+            {children}
+            <Toaster />
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>

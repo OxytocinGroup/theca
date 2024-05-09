@@ -1,5 +1,16 @@
 import mongoose, { Schema, models } from "mongoose";
 
+const bookmarkSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new Schema(
   {
     username: {
@@ -13,6 +24,9 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    bookmarks: {
+      type: [bookmarkSchema],
     },
   },
   { timestamps: true }
